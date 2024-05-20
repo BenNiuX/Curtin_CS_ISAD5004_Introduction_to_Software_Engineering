@@ -95,7 +95,7 @@ Imports: day (integer)
 Exports: day (integer)  
 
 This function verify the day and return a valid day integer value.  
-The day should between 1 and 31, others return -1.
+The day should between 1 and 31, others return -1.  
 Assumption: we assume every month has 31 days, do not consider 30 days for April or 28/29 days for February.
 
 ### convert_month_str(month_str)
@@ -106,6 +106,29 @@ Exports: month (integer)
 
 This function convert the different type of month string to month (integer).  
 Like convert "Jan" or "January" to 1.
+
+## generation.py
+
+This module contains the entrance and logic code for finding generation.
+
+### get_generation(year)
+
+Submodule get_generation  
+Imports: year (integer)  
+Exports: generation_str (string)  
+
+This function returns the corresponding generation by input year (integer).  
+The year must between 1901 and 2024, others return None.
+
+### main(input_file, output_file)
+
+Submodule main  
+Imports: input_file (string), output_file (string)  
+Exports: result (boolean)  
+
+This function is the main function of generation finder.  
+You can specify input_file and output_file to read from/write to files.  
+If you want input through console, leave parameters as None.
 
 # Modularity
 
@@ -122,6 +145,18 @@ Like convert "Jan" or "January" to 1.
 | 7 | Do different submodules perform non-overlapping tasks? |  |  |
 
 ### Review common.py
+
+| Item | Checklist question relate to modularity | Yes/No | Description of the issue if No is the answer |
+| :--: | --------------------------------------- | :----: | -------------------------------------------- |
+| 1 | Is the system free of global variables? | No |  |
+| 2 | Is each submodule free of control flags? | No |  |
+| 3 | Does each submodule perform one well-defined task? | No |  |
+| 4 | Does each submodule have less than 6 parameters? | No |  |
+| 5 | Do the parts of each submodule deal with the same data? | No |  |
+| 6 | Is the system free of duplicate submodules? | No |  |
+| 7 | Do different submodules perform non-overlapping tasks? | No |  |
+
+### Review generation.py
 
 | Item | Checklist question relate to modularity | Yes/No | Description of the issue if No is the answer |
 | :--: | --------------------------------------- | :----: | -------------------------------------------- |
@@ -290,6 +325,50 @@ Not applicable
 
 Not applicable
 
+## BB for generation.py
+
+### BB for get_generation(year)
+
+#### EP for get_generation(year)
+
+| No | Category | Test Data | Expected Result |
+| -- | -------- | --------- | --------------- |
+| 1 | year < 1901 | 1000 | None |
+| 2 | 1901 <= year <= 1945 | 1940 | "Silent Generation" |
+| 3 | 1946 <= year <= 1964 | 1950 | "Baby Boomers" |
+| 4 | 1965 <= year <= 1979 | 1970 | "Generation X" |
+| 5 | 1980 <= year <= 1994 | 1980 | "Millennials" |
+| 6 | 1995 <= year <= 2009 | 2000 | "Generation Z" |
+| 7 | 2010 <= year <= 2024 | 2020 | "Generation Alpha" |
+| 8 | year > 2024 | 2030 | None |
+
+#### BVA for get_generation(year)
+
+| No | Boundary | Test Data | Expected Result |
+| -- | -------- | --------- | --------------- |
+| 1 | invalid<br>"Silent Generation" | 1900<br>1901 | None<br>"Silent Generation" |
+| 2 | "Silent Generation"<br>"Baby Boomers" | 1945<br>1946 | "Silent Generation"<br>"Baby Boomers" |
+| 3 | "Baby Boomers"<br>"Generation X" | 1964<br>1965 | "Baby Boomers"<br>"Generation X" |
+| 4 | "Generation X"<br>"Millennials" | 1979<br>1980 | "Generation X"<br>"Millennials" |
+| 5 | "Millennials"<br>"Generation Z" | 1994<br>1995 | "Millennials"<br>"Generation Z" |
+| 6 | "Generation Z"<br>"Generation Alpha" | 2009<br>2010 | "Generation Z"<br>"Generation Alpha" |
+| 7 | "Generation Alpha"<br>invalid | 2024<br>2025 | "Generation Alpha"<br>None |
+
+### BB for main(input_file, output_file)
+
+#### EP for main(input_file, output_file)
+
+| No | Category | Test Data | Expected Result |
+| -- | -------- | --------- | --------------- |
+| 1 | console input, success | input: "20 May 2024" | result: True<br>output: "Generation Alpha" |
+| 2 | console input, fail | input: "20 ABC 2024" | result: False |
+| 3 | file input, success | file input: "20 May 2024" | result: True<br>file output: "Generation Alpha" |
+| 4 | file input, fail | file input: "20 ABC 2024" | result: False |
+
+#### BVA for main(input_file, output_file)
+
+Not applicable
+
 # White-box test cases
 
 ## WB for common.py
@@ -297,33 +376,33 @@ Not applicable
 ### WB for get_birthday_from_input()
 
 | No | Path | Test Data | Expected Result |
-| -- | -------- | --------- | --------------- |
+| -- | ---- | --------- | --------------- |
 | 1 | Direct through | input: "20 May 2024" | "20 May 2024" |
 
 ### WB for get_birthday_from_file(file_name)
 
 | No | Path | Test Data | Expected Result |
-| -- | -------- | --------- | --------------- |
+| -- | ---- | --------- | --------------- |
 | 1 | success | file input: "20 May 2024" | "20 May 2024" |
 | 2 | exception | input file is bad | "" |
 
 ### WB for write_output_to_console(output)
 
 | No | Path | Test Data | Expected Result |
-| -- | -------- | --------- | --------------- |
+| -- | ---- | --------- | --------------- |
 | 1 | Direct through | "Hello world!" | output: "Hello world!" |
 
 ### WB for write_output_to_file(output, file_name)
 
 | No | Path | Test Data | Expected Result |
-| -- | -------- | --------- | --------------- |
+| -- | ---- | --------- | --------------- |
 | 1 | success | "Hello world!" | result: True<br>file output: "Hello world!" |
 | 2 | exception | file_name: "" | result: False |
 
 ### WB for convert_birthdays(birthdays_str)
 
 | No | Path | Test Data | Expected Result |
-| -- | -------- | --------- | --------------- |
+| -- | ---- | --------- | --------------- |
 | 1 | DO NOT enter the 1st if | None | [] |
 | 2 | Enter the 1st if but not the 2nd if | "20 May" | [] |
 | 3 | Enter the 1st and the 2nd if | "20 May 2024" | [(20, 5, 2024)] |
@@ -332,7 +411,7 @@ Not applicable
 ### WB for convert_birthday(birthday_str)
 
 | No | Path | Test Data | Expected Result |
-| -- | -------- | --------- | --------------- |
+| -- | ---- | --------- | --------------- |
 | 1 | DO NOT enter the 1st if | None | throw exception |
 | 2 | Enter the 1st if but not the 2nd if | "20 May" | throw exception |
 | 3 | Enter the 1st and the 2nd if but not the 3rd if | "20 ABC 2024" | throw exception |
@@ -341,32 +420,51 @@ Not applicable
 ### WB for verify_year(year)
 
 | No | Path | Test Data | Expected Result |
-| -- | -------- | --------- | --------------- |
+| -- | ---- | --------- | --------------- |
 | 1 | Enter if | 2000 | 2000 |
 | 2 | Skip if | 1900 | -1 |
 
 ### WB for verify_month(month)
 
 | No | Path | Test Data | Expected Result |
-| -- | -------- | --------- | --------------- |
+| -- | ---- | --------- | --------------- |
 | 1 | Enter if | 2 | 2 |
 | 2 | Skip if | 0 | -1 |
 
 ### WB for verify_day(day)
 
 | No | Path | Test Data | Expected Result |
-| -- | -------- | --------- | --------------- |
+| -- | ---- | --------- | --------------- |
 | 1 | Enter if | 2 | 2 |
 | 2 | Skip if | 0 | -1 |
 
 ### WB for convert_month_str(month_str)
 
 | No | Path | Test Data | Expected Result |
-| -- | -------- | --------- | --------------- |
+| -- | ---- | --------- | --------------- |
 | 1 | Do not enter 1st layer exception | "Jan" | 1 |
 | 2 | Enter 1st layer exception but not 2nd exception | "January" | 1 |
 | 3 | Enter 1st and 2nd layer ecxeption but not 3rd exception | "1" | 1 |
 | 4 | Enter 1st and 2nd and 3rd layer ecxeption | "TEST" | -1 |
+
+## WB for generation.py
+
+### WB for get_generation(year)
+
+| No | Path | Test Data | Expected Result |
+| -- | ---- | --------- | --------------- |
+| 1 | Enter if | 2000 | "Generation Z" |
+| 2 | Skip if | 2025 | None |
+
+### WB for main(input_file, output_file)
+
+| No | Path | Test Data | Expected Result |
+| -- | ---- | --------- | --------------- |
+| 1 | Enter the 1st if part, not enter the 2nd if | file input: "20 ABC 2024" | result=False |
+| 2 | Enter the 1st if part, enter the 2nd if, enter the 3rd if, not enter the 4th if | file input: "20 May 2024"<br>output_file="" | result=False |
+| 3 | Enter the 1st if part, enter the 2nd if, enter the 3rd if, enter the 4th if | file input: "20 May 2024"<br>output_file available | result=True<br>file output: "Generation Alpha" |
+| 4 | Enter the 1st else part, not enter the 2nd if | input: "20 ABC 2024" | result=False |
+| 5 | Enter the 1st else part, enter the 2nd if, not enter the 3rd if | input: "20 May 2024" | result=True<br>output: "Generation Alpha" |
 
 # Test implementation and test execution
 
@@ -377,6 +475,14 @@ Not applicable
 Use command "python3 test_common.py" or "python3 -m unittest test_common.py" to execute test case.  
 All testcases passed.
 ![test result for test_common.py](img/test_common_result.png "Test result for test_common.py")
+
+## Test for generation.py
+
+### How to run test for generation.py
+
+Use command "python3 test_generation.py" or "python3 -m unittest test_generation.py" to execute test case.  
+All testcases passed.
+![test result for test_generation.py](img/test_generation_result.png "Test result for test_generation.py")
 
 # Traceability matrix
 
@@ -392,6 +498,8 @@ All testcases passed.
 | common.verify_month | Done | Done | Done | integer | imports: month (integer), exports: month (integer) | Done | Done | Done |
 | common.verify_day | Done | Done | Done | integer | imports: day (integer), exports: day (integer) | Done | Done | Done |
 | common.convert_month_str | Done | NA | Done | string, integer | imports: month_str (string), month (integer) | Done | NA | Done |
+| generation.get_generation | Done | Done | Done | integer, string | imports: year (integer), exports: generation_str (string) | Done | Done | Done |
+| generation.main | Done | NA | Done | string | imports: input_file (string), output_file (string), exports: result (boolean) | Done | NA | Done |
 
 # Version control
 
