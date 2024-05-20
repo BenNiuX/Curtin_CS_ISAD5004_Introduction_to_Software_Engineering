@@ -50,8 +50,8 @@ def convert_birthdays(birthdays_str):
                             f"{sub_strs[2 + i * 3]}"
                         )
                     )
-                except ValueError:
-                    pass
+                except ValueError as e:
+                    print(e)
     return result
 
 
