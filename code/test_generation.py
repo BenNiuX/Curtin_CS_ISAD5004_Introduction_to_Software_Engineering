@@ -72,6 +72,10 @@ class TestGeneration(unittest.TestCase):
         self.assertFalse(actual)
         os.remove(input_file_name)
 
+    def test_get_generation_wb(self):
+        self.assertEqual("Generation Z", generation.get_generation(2000))
+        self.assertEqual(None, generation.get_generation(2025))
+
     def test_main_wb(self):
         input_file_name = "input.txt"
         output_file_name = "output.txt"
@@ -98,7 +102,7 @@ class TestGeneration(unittest.TestCase):
             self.assertTrue("Generation Alpha" in output_file.readline())
         os.remove(input_file_name)
         os.remove(output_file_name)
-        
+
         sys.stdin = io.StringIO("20 ABC 2024")
         actual = generation.main()
         self.assertFalse(actual)
