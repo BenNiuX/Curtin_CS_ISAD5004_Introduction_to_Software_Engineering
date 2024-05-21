@@ -130,6 +130,42 @@ This function is the main function of generation finder.
 You can specify input_file and output_file to read from/write to files.  
 If you want input through console, leave parameters as None.
 
+## life_path_number.py
+
+This module contains the entrance and logic code for calculating life path number.
+
+### calc_life_path_number(day, month, year)
+
+Submodule calc_life_path_number  
+Imports: day (integer), month (integer), year (integer)  
+Exports: lp_number (integer)  
+
+This function used to calculate life path number.
+
+### add_digists(number)
+
+Submodule add_digists  
+Imports: number (integer)  
+Exports: single_digist (int)  
+
+This function used to calculate single digist from a number.
+
+### is_master_number(number)
+
+Submodule is_master_number  
+Imports: number (integer)  
+Exports: result (boolean)  
+
+This function used to check the number is a master number or not.
+
+### get_lucky_colour(number)
+
+Submodule get_lucky_colour  
+Imports: number (integer)  
+Exports: lucky_colour (string)  
+
+This function used to get lucky colour from the life path number.
+
 # Modularity
 
 ## Review checklist
@@ -157,6 +193,18 @@ If you want input through console, leave parameters as None.
 | 7 | Do different submodules perform non-overlapping tasks? | No |  |
 
 ### Review generation.py
+
+| Item | Checklist question relate to modularity | Yes/No | Description of the issue if No is the answer |
+| :--: | --------------------------------------- | :----: | -------------------------------------------- |
+| 1 | Is the system free of global variables? | No |  |
+| 2 | Is each submodule free of control flags? | No |  |
+| 3 | Does each submodule perform one well-defined task? | No |  |
+| 4 | Does each submodule have less than 6 parameters? | No |  |
+| 5 | Do the parts of each submodule deal with the same data? | No |  |
+| 6 | Is the system free of duplicate submodules? | No |  |
+| 7 | Do different submodules perform non-overlapping tasks? | No |  |
+
+### Review life_path_number.py
 
 | Item | Checklist question relate to modularity | Yes/No | Description of the issue if No is the answer |
 | :--: | --------------------------------------- | :----: | -------------------------------------------- |
@@ -369,6 +417,107 @@ Not applicable
 
 Not applicable
 
+## BB for life_path_number.py
+
+### BB for calc_life_path_number(day, month, year)
+
+#### EP for calc_life_path_number(day, month, year)
+
+| No | Category | Test Data | Expected Result |
+| -- | -------- | --------- | --------------- |
+| 1 | no master number | 21, 5, 2024 | 7 |
+| 2 | have master number but no final master number | 11, 5, 1901 | 9 |
+| 3 | final master number | 2, 8, 1990 | 1 |
+
+#### BVA for calc_life_path_number(day, month, year)
+
+Not applicable
+
+### BB for add_digists(number)
+
+#### EP for add_digists(number)
+
+| No | Category | Test Data | Expected Result |
+| -- | -------- | --------- | --------------- |
+| 1 | input master number | 11 | 11 |
+| 2 | input not master number but output master | 1901 | 11 |
+| 3 | input simple number | 12 | 3 |
+| 4 | input complex number | 1987 | 7 |
+
+#### BVA for add_digists(number)
+
+Not applicable
+
+### BB for is_master_number(number)
+
+#### EP for is_master_number(number)
+
+| No | Category | Test Data | Expected Result |
+| -- | -------- | --------- | --------------- |
+| 1 | 11 is master number | 11 | True |
+| 2 | 22 is master number | 22 | True |
+| 3 | 33 is master number | 33 | True |
+| 4 | number is not master number | 21 | False |
+
+#### BVA for is_master_number(number)
+
+| No | Boundary | Test Data | Expected Result |
+| -- | -------- | --------- | --------------- |
+| 1 | not master number<br>master number: 11 | 10<br>11 | False<br>True |
+| 2 | master number: 11<br>not master number | 11<br>12 | True<br>False |
+| 3 | not master number<br>master number: 22 | 21<br>22 | False<br>True |
+| 4 | master number: 22<br>not master number | 22<br>23 | True<br>False |
+| 5 | not master number<br>master number: 33 | 32<br>33 | False<br>True |
+| 6 | master number: 33<br>not master number | 33<br>34 | True<br>False |
+
+### BB for get_lucky_colour(number)
+
+#### EP for get_lucky_colour(number)
+
+| No | Category | Test Data | Expected Result |
+| -- | -------- | --------- | --------------- |
+| 1 | lucky colour for life path number 1 | 1 | "Red" |
+| 2 | lucky colour for life path number 2 | 2 | "Orange" |
+| 3 | lucky colour for life path number 3 | 3 | "Yellow" |
+| 4 | lucky colour for life path number 4 | 4 | "Green" |
+| 5 | lucky colour for life path number 5 | 5 | "Sky Blue" |
+| 6 | lucky colour for life path number 6 | 6 | "Indigo" |
+| 7 | lucky colour for life path number 7 | 7 | "Violet" |
+| 8 | lucky colour for life path number 8 | 8 | "Magenta" |
+| 9 | lucky colour for life path number 9 | 9 | "Gold" |
+| 10 | lucky colour for life path number 11 | 11 | "Silver" |
+| 11 | lucky colour for life path number 22 | 22 | "White" |
+| 12 | lucky colour for life path number 33 | 33 | "Crimson" |
+| 13 | lucky colour for no life path number | 0 | None |
+
+#### BVA for get_lucky_colour(number)
+
+| No | Boundary | Test Data | Expected Result |
+| -- | -------- | --------- | --------------- |
+| 1 | no lucky colour<br>lucky colour for 1~9 | 0<br>1 | None<br>"Red" |
+| 2 | lucky colour for 1~9<br>no lucky colour | 9<br>10 | "Gold"<br>None |
+| 3 | no lucky colour<br>lucky colour for 11 | 10<br>11 | None<br>"Silver" |
+| 4 | lucky colour for 11<br>no lucky colour | 11<br>12 | "Silver"<br>None |
+| 5 | no lucky colour<br>lucky colour for 22 | 21<br>22 | None<br>"White" |
+| 6 | lucky colour for 22<br>no lucky colour | 22<br>23 | "White"<br>None |
+| 7 | no lucky colour<br>lucky colour for 33 | 32<br>33 | None<br>"Crimson" |
+| 8 | lucky colour for 33<br>no lucky colour | 33<br>34 | "Crimson"<br>None |
+
+### BB for main(input_file, output_file)
+
+#### EP for main(input_file, output_file)
+
+| No | Category | Test Data | Expected Result |
+| -- | -------- | --------- | --------------- |
+| 1 | console input, success | input: "20 May 2024" | result: True<br>output: "Indigo" |
+| 2 | console input, fail | input: "20 ABC 2024" | result: False |
+| 3 | file input, success | file input: "20 May 2024" | result: True<br>file output: "Indigo" |
+| 4 | file input, fail | file input: "20 ABC 2024" | result: False |
+
+#### BVA for main(input_file, output_file)
+
+Not applicable
+
 # White-box test cases
 
 ## WB for common.py
@@ -466,6 +615,48 @@ Not applicable
 | 4 | Enter the 1st else part, not enter the 2nd if | input: "20 ABC 2024" | result=False |
 | 5 | Enter the 1st else part, enter the 2nd if, not enter the 3rd if | input: "20 May 2024" | result=True<br>output: "Generation Alpha" |
 
+## WB for life_path_number.py
+
+### WB for calc_life_path_number(day, month, year)
+
+| No | Path | Test Data | Expected Result |
+| -- | ---- | --------- | --------------- |
+| 1 | Skip while loop | 1, 1, 2001 | 5 |
+| 2 | Enter while loop | 9, 7, 2005 | 5 |
+
+### WB for add_digists(number)
+
+| No | Path | Test Data | Expected Result |
+| -- | ---- | --------- | --------------- |
+| 1 | Enter 1st if | 11 | 11 |
+| 2 | Skip 1st if, enter while loop, enter 2nd if | 1990 | 1 |
+| 3 | Skip 1st if, enter while loop, skip 2nd if | 2001 | 3 |
+| 4 | Skip 1st if, not enter while loop, skip 2nd if | -1 | 0 |
+
+### WB for is_master_number(number)
+
+| No | Path | Test Data | Expected Result |
+| -- | ---- | --------- | --------------- |
+| 1 | Direct through | 1 | False |
+
+### WB for get_lucky_colour(number)
+
+| No | Path | Test Data | Expected Result |
+| -- | ---- | --------- | --------------- |
+| 1 | Enter 1st if | 11 | "Silver" |
+| 2 | Enter 1st else enter 2nd if | 1 | "Red" |
+| 3 | Enter 1st else skip 2nd if | 0 | None |
+
+### WB for main(input_file, output_file)
+
+| No | Path | Test Data | Expected Result |
+| -- | ---- | --------- | --------------- |
+| 1 | Enter the 1st if part, not enter the 2nd if | file input: "20 ABC 2024" | result=False |
+| 2 | Enter the 1st if part, enter the 2nd if, enter the 3rd if, not enter the 4th if | file input: "20 May 2024"<br>output_file="" | result=False |
+| 3 | Enter the 1st if part, enter the 2nd if, enter the 3rd if, enter the 4th if | file input: "20 May 2024"<br>output_file available | result=True<br>file output: "Indigo" |
+| 4 | Enter the 1st else part, not enter the 2nd if | input: "20 ABC 2024" | result=False |
+| 5 | Enter the 1st else part, enter the 2nd if, not enter the 3rd if | input: "20 May 2024" | result=True<br>output: "Indigo" |
+
 # Test implementation and test execution
 
 ## Test for common.py
@@ -484,6 +675,14 @@ Use command "python3 test_generation.py" or "python3 -m unittest test_generation
 All testcases passed.
 ![test result for test_generation.py](img/test_generation_result.png "Test result for test_generation.py")
 
+## Test for life_path_number.py
+
+### How to run test for life_path_number.py
+
+Use command "python3 test_life_path_number.py" or "python3 -m unittest test_life_path_number.py" to execute test case.  
+All testcases passed.
+![test result for test_life_path_number.py](img/test_life_path_number_result.png "Test result for test_life_path_number.py")
+
 # Traceability matrix
 
 | Module name | BB (EP) | BB (BVA) | WB | Data type/s | Form of input/output | EP | BVA | Wite-Box |
@@ -500,6 +699,11 @@ All testcases passed.
 | common.convert_month_str | Done | NA | Done | string, integer | imports: month_str (string), month (integer) | Done | NA | Done |
 | generation.get_generation | Done | Done | Done | integer, string | imports: year (integer), exports: generation_str (string) | Done | Done | Done |
 | generation.main | Done | NA | Done | string | imports: input_file (string), output_file (string), exports: result (boolean) | Done | NA | Done |
+| life_path_number.calc_life_path_number | Done | NA | Done | integer | imports: day, month, year (integer), exports: lp_number (integer) | Done | NA | Done |
+| life_path_number.add_digists | Done | NA | Done | integer | imports: number (integer), exports: single_digist (integer) | Done | NA | Done |
+| life_path_number.is_master_number | Done | Done | Done | integer, boolean | imports: number (integer), exports: result (boolean) | Done | Done | Done |
+| life_path_number.get_lucky_colour | Done | Done | Done | integer, string | imports: number (integer), exports: lucky_colour (string) | Done | Done | Done |
+| life_path_number.main | Done | NA | Done | string | imports: input_file (string), output_file (string), exports: result (boolean) | Done | NA | Done |
 
 # Version control
 
