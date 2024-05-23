@@ -1,15 +1,16 @@
 | Item       | Value            |
 | ---------- | ---------------- |
-| Assessment | Final assessment |
+| Assessment | ISE final assessment |
 | Name       | Ben Niu          |
 | Student ID | 21678145         |
 | Practical class | 24/05/2024 11:59pm |
 
 # Introduction
 
-This assessment implements tools useful in numerology analysis, including life path number calculator and generation finder.
+This assessment implements tools useful in numerology analysis, including life path number calculator and generation finder.  
+This assessment follows the basic concepts of version controlling, modularity and software testing including black box and white box test design and implementation.
 
-# Module descriptions
+# Module Description
 
 This assessment contains 2 tools needed to implement. They have the same input like birthday. So I design 3 modules:
 
@@ -27,7 +28,8 @@ Submodule get_birthday_from_input
 Imports: none  
 Exports: birthday_str (string)  
 
-This function reads 1 birthday string or 2 birthday strings (string) from keyboard as user input. Then it returns the string directly.
+This function reads 1 birthday string or 2 birthday strings (string) from keyboard as user input.  
+Then it returns the string directly.
 
 ### get_birthday_from_file(file_name)
 
@@ -35,7 +37,8 @@ Submodule get_birthday_from_file
 Imports: file_name (string)  
 Exports: birthday_str (string)  
 
-This function reads a line which contains 1 birthday string or 2 birthday strings (string) from a text file. Then it returns the string directly.
+This function reads a line which contains 1 birthday string or 2 birthday strings (string) from a text file.  
+Then it returns the string directly.
 
 ### write_output_to_console(output)
 
@@ -166,9 +169,60 @@ Exports: lucky_colour (string)
 
 This function used to get lucky colour from the life path number.
 
+### main(input_file, output_file)
+
+Submodule main  
+Imports: input_file (string), output_file (string)  
+Exports: result (boolean)  
+
+This function is the main function of life path number calculator.  
+You can specify input_file and output_file to read from/write to files.  
+If you want input through console, leave parameters as None.
+
 # Modularity
 
+## User guide
+
+### Generation tool
+
+Use command "python3 generation.py" to input birthday through keyboard and get generation result in console.
+
+- e.g., run command: python3 generation.py -> keyboard input: "20 May 2024" -> Get result in display
+
+Use command "python3 generation.py INPUT_FILE OUTPUT_FILE" to input birthday through input file and get result in output file.
+
+- e.g., run command: python3 generation.py generation_input.txt generation_output.txt
+
+### Life path number tool
+
+Use command "python3 life_path_number.py" to input birthday through keyboard and get generation result in console.
+
+- e.g., run command: python3 life_path_number.py -> keyboard input: "20 May 2024" -> Get result in display
+- e.g., run command: python3 life_path_number.py -> keyboard input: "20 May 2024 20 May 2024" -> Get result in display
+
+Use command "python3 life_path_number.py INPUT_FILE OUTPUT_FILE" to input birthday through input file and get result in output file.
+
+- e.g., python3 generation.py generation_input.txt generation_output.txt
+
+## How modularity principles are used
+
+Modularity principles include 3 parts: coupling, cohesion, code redundancy.  
+After analyzing the specification, I design the modules (files) and submodules (functions) as below:  
+
+![module](img/module.png "module")
+
+I designed 3 modules following low coupling and high cohesion.  
+Each module has independent responsibility and contains several submodules which contain very simple and small piece of code.  
+These simple methods could work together to implement complex functionality and are useful to reduce code redundancy.
+
+- common.py implements all functions interact with input (console/file) and output (console/file), and handle the date string.
+- generation.py implements get generation function and provides main function as tool entrance.
+- life_path_number.py implements related functions and provides main function as tool entrance.
+
 ## Review checklist
+
+The checklist is designed following low coupling, high cohesion and no redundancy.  
+After reviewed production code using this checklist, all modules passed and followed modularity principles.
 
 | Item | Checklist question relate to modularity | Yes/No | Description of the issue if No is the answer |
 | :--: | --------------------------------------- | :----: | -------------------------------------------- |
@@ -216,7 +270,16 @@ This function used to get lucky colour from the life path number.
 | 6 | Is the system free of duplicate submodules? | No |  |
 | 7 | Do different submodules perform non-overlapping tasks? | No |  |
 
-# Black-box test cases
+# Test Design (Black Box)
+
+I designed black box test cases for each module and each function.  
+Black box contains 2 approches: EP and BVA.  
+All functions implement EP case, only some functions implement BVA because some functions don't have "boundary".
+
+- Title "BB for common.py" means black box design for module: common.py.
+- Title "BB for get_birthday_from_input()" means black box design for function: get_birthday_from input().
+- Title "EP for get_birthday_from_input()" means equivalence partitioning case for function: get_birthday_from input().
+- Title "BVA for get_birthday_from_input()" means boundary value analysis case for function: get_birthday_from input().
 
 ## BB for common.py
 
@@ -250,7 +313,7 @@ Not applicable
 
 | No | Category | Test Data | Expected Result |
 | -- | -------- | --------- | --------------- |
-| 1 | output any string | "Hello world!" | output: "Hello world!" |
+| 1 | output any string | "Niu" | output: "Niu" |
 
 #### BVA for write_output_to_console(output)
 
@@ -262,7 +325,7 @@ Not applicable
 
 | No | Category | Test Data | Expected Result |
 | -- | -------- | --------- | --------------- |
-| 1 | output any string | "Hello world!" | result: True<br>file output: "Hello world!" |
+| 1 | output any string | "Niu" | result: True<br>file output: "Niu" |
 
 #### BVA for write_output_to_file(output, file_name)
 
@@ -408,9 +471,9 @@ Not applicable
 
 | No | Category | Test Data | Expected Result |
 | -- | -------- | --------- | --------------- |
-| 1 | console input, success | input: "20 May 2024" | result: True<br>output: "Generation Alpha" |
+| 1 | console input, success | input: "20 May 2024" | result: True<br>output: contains "Generation Alpha" |
 | 2 | console input, fail | input: "20 ABC 2024" | result: False |
-| 3 | file input, success | file input: "20 May 2024" | result: True<br>file output: "Generation Alpha" |
+| 3 | file input, success | file input: "20 May 2024" | result: True<br>file output: contains "Generation Alpha" |
 | 4 | file input, fail | file input: "20 ABC 2024" | result: False |
 
 #### BVA for main(input_file, output_file)
@@ -509,16 +572,25 @@ Not applicable
 
 | No | Category | Test Data | Expected Result |
 | -- | -------- | --------- | --------------- |
-| 1 | console input, success | input: "20 May 2024" | result: True<br>output: "Indigo" |
+| 1 | console input, success | input: "20 May 2024" | result: True<br>output: contains "Indigo" |
 | 2 | console input, fail | input: "20 ABC 2024" | result: False |
-| 3 | file input, success | file input: "20 May 2024" | result: True<br>file output: "Indigo" |
+| 3 | file input, success | file input: "20 May 2024" | result: True<br>file output: contains "Indigo" |
 | 4 | file input, fail | file input: "20 ABC 2024" | result: False |
+| 5 | console input 2 birthdays, same life path number | input: "20 May 2024 20 May 2024" | result: True<br>output: contains "True" |
+| 6 | console input 2 birthdays, different life path number | input: "20 May 2024 21 May 2024" | result: True<br>output: contains "False" |
 
 #### BVA for main(input_file, output_file)
 
 Not applicable
 
-# White-box test cases
+# Test Design (White Box)
+
+I designed white box test cases for each module and each function.  
+White box test cases are used to cover all pathes.  
+All functions implement white box and covered all pathes.  
+
+- Title "WB for common.py" means white box design for module: common.py.
+- Title "WB for get_birthday_from_input()" means white box design for function: get_birthday_from input().
 
 ## WB for common.py
 
@@ -539,13 +611,13 @@ Not applicable
 
 | No | Path | Test Data | Expected Result |
 | -- | ---- | --------- | --------------- |
-| 1 | Direct through | "Hello world!" | output: "Hello world!" |
+| 1 | Direct through | "Ben Niu" | output: "Ben Niu" |
 
 ### WB for write_output_to_file(output, file_name)
 
 | No | Path | Test Data | Expected Result |
 | -- | ---- | --------- | --------------- |
-| 1 | success | "Hello world!" | result: True<br>file output: "Hello world!" |
+| 1 | success | "Ben Niu" | result: True<br>file output: "Ben Niu" |
 | 2 | exception | file_name: "" | result: False |
 
 ### WB for convert_birthdays(birthdays_str)
@@ -571,7 +643,7 @@ Not applicable
 | No | Path | Test Data | Expected Result |
 | -- | ---- | --------- | --------------- |
 | 1 | Enter if | 2000 | 2000 |
-| 2 | Skip if | 1900 | -1 |
+| 2 | Skip if | 8145 | -1 |
 
 ### WB for verify_month(month)
 
@@ -603,7 +675,7 @@ Not applicable
 | No | Path | Test Data | Expected Result |
 | -- | ---- | --------- | --------------- |
 | 1 | Enter if | 2000 | "Generation Z" |
-| 2 | Skip if | 2025 | None |
+| 2 | Skip if | 8145 | None |
 
 ### WB for main(input_file, output_file)
 
@@ -651,13 +723,15 @@ Not applicable
 
 | No | Path | Test Data | Expected Result |
 | -- | ---- | --------- | --------------- |
-| 1 | Enter the 1st if part, not enter the 2nd if | file input: "20 ABC 2024" | result=False |
-| 2 | Enter the 1st if part, enter the 2nd if, enter the 3rd if, not enter the 4th if | file input: "20 May 2024"<br>output_file="" | result=False |
-| 3 | Enter the 1st if part, enter the 2nd if, enter the 3rd if, enter the 4th if | file input: "20 May 2024"<br>output_file available | result=True<br>file output: "Indigo" |
-| 4 | Enter the 1st else part, not enter the 2nd if | input: "20 ABC 2024" | result=False |
-| 5 | Enter the 1st else part, enter the 2nd if, not enter the 3rd if | input: "20 May 2024" | result=True<br>output: "Indigo" |
+| 1 | Enter the 1st if part, skip 1st for and 2nd for and 4th if | file input: "20 ABC 2024" | result=False |
+| 2 | Enter the 1st if part, 1st for and 2nd for, enter 2nd if, skip 3nd if, skip 4th if | file input: "20 May 2024"<br>out_file="" | result=False |
+| 3 | Enter the 1st if part, 1st for and 2nd for, enter 2nd if, and 3nd if, skip 4th if | file input: "20 May 2024"<br>out_file available | result=True<br>file output: contains "6" |
+| 4 | Enter the 1st if part, 1st for and 2nd for, enter 2nd if and 3nd if and 4th if and 5th if | file input: "20 May 2024 20 May 2024"<br>out_file available | result=True<br>file output: contains "True" |
+| 5 | Enter the 1st else part, skip 1st for and 2nd for and 4th if | input: "20 ABC 2024" | result=False |
+| 6 | Enter the 1st else part, 1st for and 2nd for, enter 2nd else, and 3nd if, skip 4th if | input: "20 May 2024" | result=True<br>output: contains "6" |
+| 7 | Enter the 1st else part, 1st for and 2nd for, enter 2nd else skip 3nd if and 4th if and 5th else | input: "20 May 2024 20 May 2024" | result=True<br>output: contains "True" |
 
-# Test implementation and test execution
+# Test Implementation
 
 ## Test for common.py
 
@@ -683,7 +757,7 @@ Use command "python3 test_life_path_number.py" or "python3 -m unittest test_life
 All testcases passed.
 ![test result for test_life_path_number.py](img/test_life_path_number_result.png "Test result for test_life_path_number.py")
 
-# Traceability matrix
+# Traceability Matrix
 
 | Module name | BB (EP) | BB (BVA) | WB | Data type/s | Form of input/output | EP | BVA | Wite-Box |
 | ----------- | ------- | -------- | -- | ----------- | -------------------- | -- | --- | -------- |
@@ -705,7 +779,7 @@ All testcases passed.
 | life_path_number.get_lucky_colour | Done | Done | Done | integer, string | imports: number (integer), exports: lucky_colour (string) | Done | Done | Done |
 | life_path_number.main | Done | NA | Done | string | imports: input_file (string), output_file (string), exports: result (boolean) | Done | NA | Done |
 
-# Version control
+# Version Control
 
 I create an empty repo and upload initial files to master branch.  
 I will create 3 branches to develop different modules:  
@@ -716,4 +790,29 @@ I will create 3 branches to develop different modules:
 
 After developed complete, merge back patches to master branch.
 
+![branch](img/branch.png "branch")
+
 # Discusstion
+
+During this assessment, I used the skills learning in ISE course including version controlling, modularity and software testing to complete it.  
+
+## Version control
+
+I used git to maintain changes and create branches for feature development.  
+Git helps me to record each change history, easy to revert, easy to diff files.  
+It is very helpful to develop new features without conflicting with the stable codebase.
+
+## Modularity principles
+
+Before coding, I used modularity principles to design my modules. The principles include coupling, cohesion, redundancy.  
+These principles guide me to design different modules by function, design small and single function methods.  
+This design is very helpful to do basic function test for good software quality and easy to combine into more complex functions.  
+After I implemented all basic functions, it was very easy to complete the scenario coding with high quality.
+
+## Software testing
+
+After complete module design following modularity principles, the modules will be easily to design test case.  
+Software testing is very helpful to ensure software quality. The test cases are helpful to ensure the code run well.  
+First I completed the black box and white box test design following equivalence partitioning, boundary value analysis and path cover.  
+Then implemented these test cases and executed all test cases pass. Some test cases ran fail pointing there were bugs in source code.  
+After completed all test cases, I executed all test cases after any changed applied to make sure all functions work well.
