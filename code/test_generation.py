@@ -7,6 +7,18 @@ import generation
 
 class TestGeneration(unittest.TestCase):
 
+    def setUp(self):
+        self.input_file_name = "input.txt"
+        self.output_file_name = "output.txt"
+
+    def tearDown(self):
+        sys.stdin = sys.__stdin__
+        sys.stdout = sys.__stdout__
+        if os.path.exists(self.input_file_name):
+            os.remove(self.input_file_name)
+        if os.path.exists(self.output_file_name):
+            os.remove(self.output_file_name)
+
     def test_get_generation_ep(self):
         self.assertEqual(None, generation.get_generation(1000))
         self.assertEqual("Silent Generation", generation.get_generation(1940))
@@ -54,54 +66,46 @@ class TestGeneration(unittest.TestCase):
         self.assertFalse(actual)
         sys.stdin = sys.__stdin__
 
-        input_file_name = "input.txt"
-        output_file_name = "output.txt"
-        with open(input_file_name, "w") as input_file:
+        with open(self.input_file_name, "w") as input_file:
             input_file.write("20 May 2024")
-        actual = generation.main(input_file_name, output_file_name)
+        actual = generation.main(self.input_file_name, self.output_file_name)
         self.assertTrue(actual)
-        with open(output_file_name, "r") as output_file:
+        with open(self.output_file_name, "r") as output_file:
             self.assertTrue("Generation Alpha" in output_file.readline())
-        os.remove(input_file_name)
-        os.remove(output_file_name)
+        os.remove(self.input_file_name)
+        os.remove(self.output_file_name)
 
-        input_file_name = "input.txt"
-        with open(input_file_name, "w") as input_file:
+        with open(self.input_file_name, "w") as input_file:
             input_file.write("20 ABC 2024")
-        actual = generation.main(input_file_name, output_file_name)
+        actual = generation.main(self.input_file_name, self.output_file_name)
         self.assertFalse(actual)
-        os.remove(input_file_name)
+        os.remove(self.input_file_name)
 
     def test_get_generation_wb(self):
         self.assertEqual("Generation Z", generation.get_generation(2000))
-        self.assertEqual(None, generation.get_generation(2025))
+        self.assertEqual(None, generation.get_generation(8145))
 
     def test_main_wb(self):
-        input_file_name = "input.txt"
-        output_file_name = "output.txt"
-        with open(input_file_name, "w") as input_file:
+        with open(self.input_file_name, "w") as input_file:
             input_file.write("20 ABC 2024")
-        actual = generation.main(input_file_name, output_file_name)
+        actual = generation.main(self.input_file_name, self.output_file_name)
         self.assertFalse(actual)
-        os.remove(input_file_name)
+        os.remove(self.input_file_name)
 
-        input_file_name = "input.txt"
-        with open(input_file_name, "w") as input_file:
+        with open(self.input_file_name, "w") as input_file:
             input_file.write("20 May 2024")
-        actual = generation.main(input_file_name, "")
+        actual = generation.main(self.input_file_name, "")
         self.assertFalse(actual)
-        os.remove(input_file_name)
+        os.remove(self.input_file_name)
 
-        input_file_name = "input.txt"
-        output_file_name = "output.txt"
-        with open(input_file_name, "w") as input_file:
+        with open(self.input_file_name, "w") as input_file:
             input_file.write("20 May 2024")
-        actual = generation.main(input_file_name, output_file_name)
+        actual = generation.main(self.input_file_name, self.output_file_name)
         self.assertTrue(actual)
-        with open(output_file_name, "r") as output_file:
+        with open(self.output_file_name, "r") as output_file:
             self.assertTrue("Generation Alpha" in output_file.readline())
-        os.remove(input_file_name)
-        os.remove(output_file_name)
+        os.remove(self.input_file_name)
+        os.remove(self.output_file_name)
 
         sys.stdin = io.StringIO("20 ABC 2024")
         actual = generation.main()

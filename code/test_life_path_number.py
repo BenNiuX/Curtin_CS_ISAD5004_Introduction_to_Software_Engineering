@@ -7,6 +7,18 @@ import life_path_number
 
 class TestLifePathNumber(unittest.TestCase):
 
+    def setUp(self):
+        self.input_file_name = "input.txt"
+        self.output_file_name = "output.txt"
+
+    def tearDown(self):
+        sys.stdin = sys.__stdin__
+        sys.stdout = sys.__stdout__
+        if os.path.exists(self.input_file_name):
+            os.remove(self.input_file_name)
+        if os.path.exists(self.output_file_name):
+            os.remove(self.output_file_name)
+
     def test_calc_life_path_number_ep(self):
         self.assertEqual(7,
                          life_path_number.calc_life_path_number(21, 5, 2024))
@@ -107,50 +119,74 @@ class TestLifePathNumber(unittest.TestCase):
         self.assertFalse(actual)
         sys.stdin = sys.__stdin__
 
-        input_file_name = "input.txt"
-        output_file_name = "output.txt"
-        with open(input_file_name, "w") as input_file:
+        with open(self.input_file_name, "w") as input_file:
             input_file.write("20 May 2024")
-        actual = life_path_number.main(input_file_name, output_file_name)
+        actual = life_path_number.main(self.input_file_name,
+                                       self.output_file_name)
         self.assertTrue(actual)
-        with open(output_file_name, "r") as output_file:
+        with open(self.output_file_name, "r") as output_file:
             self.assertTrue("Indigo" in output_file.readline())
-        os.remove(input_file_name)
-        os.remove(output_file_name)
+        os.remove(self.input_file_name)
+        os.remove(self.output_file_name)
 
-        input_file_name = "input.txt"
-        with open(input_file_name, "w") as input_file:
+        with open(self.input_file_name, "w") as input_file:
             input_file.write("20 ABC 2024")
-        actual = life_path_number.main(input_file_name, output_file_name)
+        actual = life_path_number.main(self.input_file_name,
+                                       self.output_file_name)
         self.assertFalse(actual)
-        os.remove(input_file_name)
+        os.remove(self.input_file_name)
+
+        sys.stdin = io.StringIO("20 May 2024 20 May 2024")
+        cap_out = io.StringIO()
+        sys.stdout = cap_out
+        actual = life_path_number.main()
+        self.assertTrue(actual)
+        self.assertTrue("True" in cap_out.getvalue())
+        sys.stdin = sys.__stdin__
+        sys.stdout = sys.__stdout__
+
+        sys.stdin = io.StringIO("20 May 2024 21 May 2024")
+        cap_out = io.StringIO()
+        sys.stdout = cap_out
+        actual = life_path_number.main()
+        self.assertTrue(actual)
+        self.assertTrue("False" in cap_out.getvalue())
+        sys.stdin = sys.__stdin__
+        sys.stdout = sys.__stdout__
 
     def test_main_wb(self):
-        input_file_name = "input.txt"
-        output_file_name = "output.txt"
-        with open(input_file_name, "w") as input_file:
+        with open(self.input_file_name, "w") as input_file:
             input_file.write("20 ABC 2024")
-        actual = life_path_number.main(input_file_name, output_file_name)
+        actual = life_path_number.main(self.input_file_name,
+                                       self.output_file_name)
         self.assertFalse(actual)
-        os.remove(input_file_name)
+        os.remove(self.input_file_name)
 
-        input_file_name = "input.txt"
-        with open(input_file_name, "w") as input_file:
+        with open(self.input_file_name, "w") as input_file:
             input_file.write("20 May 2024")
-        actual = life_path_number.main(input_file_name, "")
+        actual = life_path_number.main(self.input_file_name, "")
         self.assertFalse(actual)
-        os.remove(input_file_name)
+        os.remove(self.input_file_name)
 
-        input_file_name = "input.txt"
-        output_file_name = "output.txt"
-        with open(input_file_name, "w") as input_file:
+        with open(self.input_file_name, "w") as input_file:
             input_file.write("20 May 2024")
-        actual = life_path_number.main(input_file_name, output_file_name)
+        actual = life_path_number.main(self.input_file_name,
+                                       self.output_file_name)
         self.assertTrue(actual)
-        with open(output_file_name, "r") as output_file:
-            self.assertTrue("Indigo" in output_file.readline())
-        os.remove(input_file_name)
-        os.remove(output_file_name)
+        with open(self.output_file_name, "r") as output_file:
+            self.assertTrue("6" in output_file.readline())
+        os.remove(self.input_file_name)
+        os.remove(self.output_file_name)
+
+        with open(self.input_file_name, "w") as input_file:
+            input_file.write("20 May 2024 20 May 2024")
+        actual = life_path_number.main(self.input_file_name,
+                                       self.output_file_name)
+        self.assertTrue(actual)
+        with open(self.output_file_name, "r") as output_file:
+            self.assertTrue("True" in output_file.readline())
+        os.remove(self.input_file_name)
+        os.remove(self.output_file_name)
 
         sys.stdin = io.StringIO("20 ABC 2024")
         actual = life_path_number.main()
@@ -162,7 +198,16 @@ class TestLifePathNumber(unittest.TestCase):
         sys.stdout = cap_out
         actual = life_path_number.main()
         self.assertTrue(actual)
-        self.assertTrue("Indigo" in cap_out.getvalue())
+        self.assertTrue("6" in cap_out.getvalue())
+        sys.stdin = sys.__stdin__
+        sys.stdout = sys.__stdout__
+
+        sys.stdin = io.StringIO("20 May 2024 20 May 2024")
+        cap_out = io.StringIO()
+        sys.stdout = cap_out
+        actual = life_path_number.main()
+        self.assertTrue(actual)
+        self.assertTrue("True" in cap_out.getvalue())
         sys.stdin = sys.__stdin__
         sys.stdout = sys.__stdout__
 

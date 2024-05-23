@@ -7,6 +7,18 @@ import common
 
 class TestCommon(unittest.TestCase):
 
+    def setUp(self):
+        self.input_file_name = "input.txt"
+        self.output_file_name = "output.txt"
+
+    def tearDown(self):
+        sys.stdin = sys.__stdin__
+        sys.stdout = sys.__stdout__
+        if os.path.exists(self.input_file_name):
+            os.remove(self.input_file_name)
+        if os.path.exists(self.output_file_name):
+            os.remove(self.output_file_name)
+
     def test_get_birthday_from_input_ep(self):
         sys.stdin = io.StringIO("20 May 2024")
         actual = common.get_birthday_from_input()
@@ -14,27 +26,26 @@ class TestCommon(unittest.TestCase):
         sys.stdin = sys.__stdin__
 
     def test_get_birthday_from_file_ep(self):
-        input_file_name = "input.txt"
-        with open(input_file_name, "w") as input_file:
+        with open(self.input_file_name, "w") as input_file:
             input_file.write("20 May 2024")
-        actual = common.get_birthday_from_file(input_file_name)
+        actual = common.get_birthday_from_file(self.input_file_name)
         self.assertEqual("20 May 2024", actual)
-        os.remove(input_file_name)
+        os.remove(self.input_file_name)
 
     def test_write_output_to_console_ep(self):
         cap_out = io.StringIO()
         sys.stdout = cap_out
-        common.write_output_to_console("Hello world!")
-        self.assertEqual("Hello world!\n", cap_out.getvalue())
+        common.write_output_to_console("Niu")
+        self.assertEqual("Niu\n", cap_out.getvalue())
         sys.stdout = sys.__stdout__
 
     def test_write_output_to_file_ep(self):
-        output_file_name = "output.txt"
-        result = common.write_output_to_file("Hello world!", output_file_name)
+        result = common.write_output_to_file("Niu",
+                                             self.output_file_name)
         self.assertTrue(result)
-        with open(output_file_name, "r") as output_file:
-            self.assertEqual("Hello world!", output_file.readline())
-        os.remove(output_file_name)
+        with open(self.output_file_name, "r") as output_file:
+            self.assertEqual("Niu", output_file.readline())
+        os.remove(self.output_file_name)
 
     def test_convert_birthdays_ep(self):
         actual = common.convert_birthdays("")
@@ -158,32 +169,31 @@ class TestCommon(unittest.TestCase):
         sys.stdin = sys.__stdin__
 
     def test_get_birthday_from_file_wb(self):
-        input_file_name = "input.txt"
-        with open(input_file_name, "w") as input_file:
+        with open(self.input_file_name, "w") as input_file:
             input_file.write("20 May 2024")
-        actual = common.get_birthday_from_file(input_file_name)
+        actual = common.get_birthday_from_file(self.input_file_name)
         self.assertEqual("20 May 2024", actual)
-        os.remove(input_file_name)
+        os.remove(self.input_file_name)
 
-        actual = common.get_birthday_from_file(input_file_name)
+        actual = common.get_birthday_from_file(self.input_file_name)
         self.assertEqual("", actual)
 
     def test_write_output_to_console_wb(self):
         cap_out = io.StringIO()
         sys.stdout = cap_out
-        common.write_output_to_console("Hello world!")
-        self.assertEqual("Hello world!\n", cap_out.getvalue())
+        common.write_output_to_console("Ben Niu")
+        self.assertEqual("Ben Niu\n", cap_out.getvalue())
         sys.stdout = sys.__stdout__
 
     def test_write_output_to_file_wb(self):
-        output_file_name = "output.txt"
-        result = common.write_output_to_file("Hello world!", output_file_name)
+        result = common.write_output_to_file("Ben Niu",
+                                             self.output_file_name)
         self.assertTrue(result)
-        with open(output_file_name, "r") as output_file:
-            self.assertEqual("Hello world!", output_file.readline())
-        os.remove(output_file_name)
+        with open(self.output_file_name, "r") as output_file:
+            self.assertEqual("Ben Niu", output_file.readline())
+        os.remove(self.output_file_name)
 
-        result = common.write_output_to_file("Hello world!", "")
+        result = common.write_output_to_file("Ben Niu", "")
         self.assertFalse(result)
 
     def test_convert_birthdays_wb(self):
@@ -214,7 +224,7 @@ class TestCommon(unittest.TestCase):
 
     def test_verify_year_wb(self):
         self.assertEqual(2000, common.verify_year(2000))
-        self.assertEqual(-1, common.verify_year(1900))
+        self.assertEqual(-1, common.verify_year(8145))
 
     def test_verify_month_wb(self):
         self.assertEqual(2, common.verify_month(2))
