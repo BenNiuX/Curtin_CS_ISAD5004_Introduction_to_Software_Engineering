@@ -202,7 +202,7 @@ Use command "python3 life_path_number.py" to input birthday through keyboard and
 
 Use command "python3 life_path_number.py INPUT_FILE OUTPUT_FILE" to input birthday through input file and get result in output file.
 
-- e.g., python3 generation.py generation_input.txt generation_output.txt
+- e.g., python3 life_path_number.py life_path_number_input.txt life_path_number_output.txt
 
 ## How modularity principles are used
 
