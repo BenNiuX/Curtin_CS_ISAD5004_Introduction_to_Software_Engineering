@@ -15,6 +15,9 @@ import common
 
 
 def calc_life_path_number(day, month, year):
+    '''
+    Calculate life path number.
+    '''
     num_d = add_digists(day)
     num_m = add_digists(month)
     num_y = add_digists(year)
@@ -27,6 +30,9 @@ def calc_life_path_number(day, month, year):
 
 
 def add_digists(number):
+    '''
+    Calculate single digist from a number.
+    '''
     if is_master_number(number):
         return number
     single_digist = 0
@@ -40,11 +46,17 @@ def add_digists(number):
 
 
 def is_master_number(number):
+    '''
+    Check the number is a master number or not.
+    '''
     master_nums = [11, 22, 33]
     return number in master_nums
 
 
 def get_lucky_colour(number):
+    '''
+    Get lucky colour from the life path number.
+    '''
     master_lucky_colours = ["Silver", "White", "Crimson"]
     lucky_colours = ["Red", "Orange", "Yellow", "Green", "Sky Blue",
                      "Indigo", "Violet", "Magenta", "Gold"]
@@ -58,6 +70,11 @@ def get_lucky_colour(number):
 
 
 def main(input_file=None, output_file=None):
+    '''
+    Main function of life path number calculator.
+    Specify input_file and output_file to read from/write to files.
+    If want input through console, leave parameters as None.
+    '''
     birthday_str = None
     result = False
     interact_file = input_file is not None and output_file is not None

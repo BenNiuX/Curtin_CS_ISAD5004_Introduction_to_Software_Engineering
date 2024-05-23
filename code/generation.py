@@ -14,6 +14,10 @@ import common
 
 
 def get_generation(year):
+    '''
+    Return the corresponding generation by input year (integer).
+    The year must between 1901 and 2024, others return None.
+    '''
     generations_info = [
         (1901, 1945, "Silent Generation"),
         (1946, 1964, "Baby Boomers"),
@@ -29,9 +33,15 @@ def get_generation(year):
 
 
 def main(input_file=None, output_file=None):
+    '''
+    Main function of generation finder.
+    Specify input_file and output_file to read from/write to files.
+    If want input through console, leave parameters as None.
+    '''
     birthday_str = None
     result = False
-    if input_file is not None and output_file is not None:
+    interact_file = input_file is not None and output_file is not None
+    if interact_file:
         birthday_str = common.get_birthday_from_file(input_file)
     else:
         birthday_str = common.get_birthday_from_input()
@@ -39,7 +49,7 @@ def main(input_file=None, output_file=None):
     if len(birthdays) >= 1:
         year = birthdays[0][2]
         generation = get_generation(year)
-        if input_file is not None and output_file is not None:
+        if interact_file:
             if common.write_output_to_file(
                     "Generation for %d: %s" % (year, generation), output_file):
                 result = True
